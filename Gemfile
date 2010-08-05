@@ -7,6 +7,7 @@ gem 'sqlite3-ruby', :require => 'sqlite3'
 # Libraries
 gem 'andand'
 gem 'clearance'
+gem 'formtastic', :git => "http://github.com/justinfrench/formtastic.git", :branch => "rails3"
 
 group :development do
   gem 'wirble'
