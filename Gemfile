@@ -23,4 +23,8 @@ group :test do
   gem 'autotest'
   gem 'autotest-rails', :require => 'autotest/rails'
   gem 'autotest-growl', :require => 'autotest/growl'
+  gem 'redgreen'
+  gem 'test-unit', '1.2.3'
+  gem 'factory_girl'
+  gem 'factory_girl_rails'
 end
