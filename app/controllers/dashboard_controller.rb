@@ -1,6 +1,6 @@
 class DashboardController < ApplicationController
 
-  before_filter :redirect_to_root, :unless => :signed_in?
+  before_filter :authenticate
 
   def index
   end
