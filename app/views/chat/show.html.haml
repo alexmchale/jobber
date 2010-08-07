@@ -1,0 +1,12 @@
+%ul
+
+  - @interview.chats.each do |chat|
+
+    %li= "#{chat.time} #{chat.user.andand.email} #{chat.message}"
+
+  %li
+    = form_tag do
+      = text_field_tag :message
+      = submit_tag
+
+%p= link_to "Back to Interview", interview_path(@interview)

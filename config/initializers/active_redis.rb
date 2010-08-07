@@ -1,7 +1,7 @@
 class ActiveRecord::Base
 
   def redis
-    @redis ||= Redis.new
+    $redis or raise("redis is not configured")
   end
 
 end

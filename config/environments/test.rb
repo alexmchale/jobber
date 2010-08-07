@@ -33,3 +33,6 @@ Jobber::Application.configure do
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
 end
+
+$redis_database_number = 3
+$redis = Redis.new(:db => $redis_database_number)

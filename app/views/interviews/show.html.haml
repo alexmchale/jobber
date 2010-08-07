@@ -8,4 +8,5 @@
 
   %p= "Your interview is scheduled to start at #{@interview.starts_at.to_s}."
 
+%p= link_to "Chat", :controller => :chat, :action => :show, :id => @interview.id
 %p= link_to_dashboard

@@ -49,3 +49,6 @@ Jobber::Application.configure do
 
   config.action_mailer.default_url_options   = { :host => "localhost:3000" }
 end
+
+$redis_database_number = 2
+$redis = Redis.new(:db => $redis_database_number)
