@@ -9,6 +9,7 @@ class InterviewsController < ApplicationController
   # correct access code.
   def show
     @interview = Interview.find(params[:id])
+    @candidate = @interview.candidate
     @authorized = @interview.authorized?(current_user || params[:access_code])
 
     return redirect_to(dashboard_path) if !@authorized

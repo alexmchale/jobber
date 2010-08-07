@@ -1,0 +1,11 @@
+- if current_user
+
+  %h1= "Interview with #{@candidate.name} (#{@candidate.email})"
+
+  %p= "Scheduled to begin at #{@interview.starts_at.to_s}."
+
+- else
+
+  %p= "Your interview is scheduled to start at #{@interview.starts_at.to_s}."
+
+%p= link_to_dashboard

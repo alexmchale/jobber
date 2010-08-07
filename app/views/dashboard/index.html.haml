@@ -1,9 +1,9 @@
 %h1= current_user.email
 
-%h1 Interviews
+%h2 Interviews
 
 %ul
-  - current_user.interviews.each do |interview|
-    %li= interview.candidate.name
+  - current_user.interviews.each do |i|
+    %li= link_to i.candidate.name, interview_path(i)
 
-= link_to "Create New Interview", new_interview_path
+%p= link_to "Create New Interview", new_interview_path
