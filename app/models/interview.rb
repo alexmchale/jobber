@@ -9,7 +9,8 @@ class Interview < ActiveRecord::Base
   validates_associated :candidate
   validates_presence_of :starts_at
 
-  # Token can be a user or an access code.
+  ### AUTHORIZATION ###
+
   def authorized?(token)
     case token
     when User
@@ -19,6 +20,26 @@ class Interview < ActiveRecord::Base
     else
       false
     end
+  end
+
+  ### CHAT ###
+
+  def chat_key
+    "interview:#{id}:chat"
+  end
+
+  def chats(offset = 0)
+    chats = redis.lrange(chat_key, offset, -1) || []
+
+    chats.map do |chat_string|
+      ChatMessage.decode chat_string
+    end
+  end
+
+  def append_chat(user, message)
+    cm = ChatMessage.new(Time.now, user, message)
+
+    redis.lpush chat_key, cm.encode
   end
 
 end
