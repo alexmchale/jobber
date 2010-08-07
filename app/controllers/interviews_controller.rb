@@ -1,8 +1,17 @@
 class InterviewsController < ApplicationController
 
-  before_filter :authenticate
+  before_filter :authenticate, :except => :show
 
   def index
+  end
+
+  # The show method can be accessed by logged-in users and candidates with the
+  # correct access code.
+  def show
+    @interview = Interview.find(params[:id])
+    @authorized = @interview.authorized?(current_user || params[:access_code])
+
+    return redirect_to(dashboard_path) if !@authorized
   end
 
   def new

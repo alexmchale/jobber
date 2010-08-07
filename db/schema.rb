@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100806122950) do
+ActiveRecord::Schema.define(:version => 20100806170828) do
 
   create_table "candidates", :force => true do |t|
     t.string   "name"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(:version => 20100806122950) do
     t.datetime "starts_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "access_code"
   end
 
   create_table "user_interviews", :force => true do |t|
