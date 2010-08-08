@@ -14,6 +14,8 @@ class Interview < ActiveRecord::Base
   validates_associated :candidate
   validates_presence_of :starts_at
 
+  before_validation :generate_access_code
+
   ### AUTHORIZATION ###
 
   def authorized?(token)
@@ -25,6 +27,12 @@ class Interview < ActiveRecord::Base
     else
       false
     end
+  end
+
+protected
+
+  def generate_access_code
+    self.access_code ||= Digest::SHA1.hexdigest("#{Time.now} -- #{rand}")
   end
 
 end

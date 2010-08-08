@@ -4,8 +4,7 @@ class InterviewsControllerTest < ActionController::TestCase
 
   context "as a logged in user" do
     setup do
-      @user = Factory(:email_confirmed_user)
-      sign_in_as @user
+      sign_in_as_valid_user
     end
 
     context "on the new page" do
@@ -18,7 +17,14 @@ class InterviewsControllerTest < ActionController::TestCase
 
     context "posting a new interview" do
       setup do
-        post :create, :interview => { :starts_at => Time.now, :candidate_attributes => { :name => "Bob", :email => "foo@ex.com" } }
+        interview = {
+          :starts_at => Time.now,
+          :candidate_attributes => {
+            :name => "Bob",
+            :email => "foo@ex.com" }
+        }
+
+        post :create, :interview => interview
       end
 
       should respond_with :redirect
