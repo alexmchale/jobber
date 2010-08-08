@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100808021252) do
+ActiveRecord::Schema.define(:version => 20100808023832) do
 
   create_table "candidates", :force => true do |t|
     t.string   "name"
@@ -45,6 +45,9 @@ ActiveRecord::Schema.define(:version => 20100808021252) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "user_interviews", ["interview_id"], :name => "index_user_interviews_on_interview_id"
+  add_index "user_interviews", ["user_id"], :name => "index_user_interviews_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "email"
