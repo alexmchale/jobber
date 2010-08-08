@@ -4,6 +4,8 @@ class InterviewTest < ActiveSupport::TestCase
 
   should have_one :candidate
   should have_many :users
+  should have_many :documents
+
   should validate_presence_of :starts_at
 
   context "an interview" do

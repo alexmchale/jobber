@@ -8,6 +8,8 @@ class Interview < ActiveRecord::Base
 
   has_many :chat_messages
 
+  has_many :documents
+
   validates_associated :candidate
   validates_presence_of :starts_at
 
