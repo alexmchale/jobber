@@ -7,3 +7,11 @@
     %li= link_to i.candidate.name, interview_path(i)
 
 %p= link_to "Create New Interview", new_interview_path
+
+%h2 Document Templates
+
+%ul
+  - current_user.templates.each do |template|
+    %li= link_to template.name, template_path(template)
+
+-# %p= link_to "Create New Template", new_template_path
