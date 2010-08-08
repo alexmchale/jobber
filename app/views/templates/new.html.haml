@@ -1,0 +1,10 @@
+%h1 Create New Template
+
+= semantic_form_for @template do |f|
+
+  = f.input :name
+  = f.input :content
+
+  = f.buttons
+
+%p= link_to_dashboard

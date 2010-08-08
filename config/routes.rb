@@ -1,11 +1,11 @@
 Jobber::Application.routes.draw do
 
-  match "dashboard" => "dashboard#index"
+  get "dashboard" => "dashboard#index"
+  get "chat/:id" => "chat#show"
+  post "chat/:id" => "chat#create"
 
   resources :interviews
-
-  match "chat/:id" => "chat#show", :via => :get
-  match "chat/:id" => "chat#create", :via => :post
+  resources :templates
 
   root :to => "dashboard#index"
 
