@@ -2,4 +2,12 @@
 # See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  back: "Go Back"
+  sign_out: "Sign Out"
+
+  goto:
+    dashboard: "Back to Dashboard"
+
+  documents:
+    new:
+      title: "Create New Document"

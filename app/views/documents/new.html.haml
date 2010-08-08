@@ -1,0 +1,20 @@
+%h1= t '.title'
+
+= form_for(@document) do |f|
+
+  - if @document.errors.any?
+    #errorExplanation
+      %h2= "#{pluralize(@document.errors.count, 'error')} prohibited this user from being saved:"
+      %ul
+      - @document.errors.full_messages.each do |msg|
+        %li= msg
+
+  = f.hidden_field :interview_id
+
+  .field
+    = select_tag "template_id", options_from_collection_for_select(current_user.templates, "id", "name")
+
+  .actions
+    = f.submit
+
+%p= link_to_dashboard

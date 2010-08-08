@@ -6,6 +6,7 @@ Jobber::Application.routes.draw do
 
   resources :interviews
   resources :templates
+  resources :documents
 
   root :to => "dashboard#index"
 

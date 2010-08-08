@@ -1,0 +1,10 @@
+%h1= t '.title'
+%p
+  = link_to t('back'), documents_path
+  = link_to t('edit'), edit_document_path(@document)
+
+%dl
+  %dt= Document.human_attribute_name :interview
+  %dd= @document.interview
+  %dt= Document.human_attribute_name :content
+  %dd= @document.content
