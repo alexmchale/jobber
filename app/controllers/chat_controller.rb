@@ -6,7 +6,7 @@ class ChatController < ApplicationController
 
   def create
     @interview = Interview.find(params[:id])
-    @interview.append_chat current_user, params[:message]
+    @interview.chat_messages.create! :user => current_user, :message => params[:message]
 
     render :show
   end

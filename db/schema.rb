@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100806170828) do
+ActiveRecord::Schema.define(:version => 20100808021252) do
 
   create_table "candidates", :force => true do |t|
     t.string   "name"
@@ -19,6 +19,17 @@ ActiveRecord::Schema.define(:version => 20100806170828) do
     t.datetime "updated_at"
     t.integer  "interview_id"
   end
+
+  create_table "chat_messages", :force => true do |t|
+    t.integer  "interview_id"
+    t.integer  "user_id"
+    t.text     "message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "chat_messages", ["interview_id"], :name => "index_chat_messages_on_interview_id"
+  add_index "chat_messages", ["user_id"], :name => "index_chat_messages_on_user_id"
 
   create_table "interviews", :force => true do |t|
     t.integer  "candidate_id"

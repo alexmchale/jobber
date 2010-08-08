@@ -1,8 +1,8 @@
 %ul
 
-  - @interview.chats.each do |chat|
+  - @interview.chat_messages.each do |cm|
 
-    %li= "#{chat.time} #{chat.user.andand.email} #{chat.message}"
+    %li= "#{cm.created_at} #{cm.user.andand.email} #{cm.message}"
 
   %li
     = form_tag do

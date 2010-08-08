@@ -21,6 +21,3 @@ Jobber::Application.configure do
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
 end
-
-$redis_database_number = 1
-$redis = Redis.new(:db => $redis_database_number)

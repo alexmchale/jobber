@@ -5,11 +5,4 @@ require 'rails/test_help'
 require 'clearance/shoulda_macros'
 
 class ActiveSupport::TestCase
-
-  setup :clear_redis
-
-  def clear_redis
-    $redis.flushdb
-  end
-
 end

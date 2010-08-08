@@ -17,13 +17,13 @@ class ChatControllerTest < ActionController::TestCase
     should respond_with :success
 
     should "post new messages" do
-      assert_equal 0, @interview.chats.count
+      assert_equal 0, @interview.chat_messages.count
 
       post :create, :id => @interview.id, :message => "hi"
 
-      assert_equal 1, @interview.chats.count
-      assert_equal "hi", @interview.chats.last.message
-      assert_equal @user, @interview.chats.last.user
+      assert_equal 1, @interview.chat_messages.count
+      assert_equal "hi", @interview.chat_messages.last.message
+      assert_equal @user, @interview.chat_messages.last.user
     end
 
   end
