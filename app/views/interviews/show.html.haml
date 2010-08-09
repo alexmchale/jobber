@@ -1,3 +1,6 @@
+- content_for :head do
+  = javascript_include_tag "interview"
+
 - if current_user
 
   %h1= "Interview with #{@candidate.name} (#{@candidate.email})"
