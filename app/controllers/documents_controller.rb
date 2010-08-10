@@ -14,6 +14,8 @@ class DocumentsController < ApplicationController
   def show
     @document = Document.find(params[:id])
 
+    @document.current! if params[:make_current]
+
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @document }
@@ -47,7 +49,7 @@ class DocumentsController < ApplicationController
 
     respond_to do |format|
       if @document.save
-        @interview.update_attributes! :current_document => @document
+        @document.current!
 
         format.html { redirect_to(@document, :notice => 'Document was successfully created.') }
         format.xml  { render :xml => @document, :status => :created, :location => @document }

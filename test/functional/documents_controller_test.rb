@@ -2,10 +2,10 @@ require 'test_helper'
 
 class DocumentsControllerTest < ActionController::TestCase
   setup do
-    @user = Factory(:email_confirmed_user)
-    @interview = Factory(:interview)
-    @document = Factory(:document, :interview => @interview)
-    @template = Factory(:template, :user => @user)
+    @user = Factory.create(:email_confirmed_user)
+    @interview = Factory.create(:interview)
+    @document = Factory.create(:document, :interview => @interview)
+    @template = Factory.create(:template, :user => @user)
 
     sign_in_as @user
   end
@@ -30,8 +30,12 @@ class DocumentsControllerTest < ActionController::TestCase
   end
 
   test "should show document" do
-    get :show, :id => @document.to_param
+    assert_nil @interview.current_document
+
+    get :show, :id => @document.to_param, :make_current => true
     assert_response :success
+
+    assert_equal @document, @interview.reload.current_document
   end
 
   test "should get edit" do

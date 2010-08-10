@@ -15,4 +15,10 @@ class Document < ActiveRecord::Base
     end
   end
 
+  def current!
+    self.interview.current_document = self
+    self.interview.save!
+    self
+  end
+
 end
