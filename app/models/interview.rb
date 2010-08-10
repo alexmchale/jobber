@@ -8,7 +8,7 @@ class Interview < ActiveRecord::Base
 
   has_many :chat_messages
 
-  has_one :current_document, :class_name => "Document"
+  belongs_to :current_document, :class_name => "Document"
   has_many :documents
 
   validates_associated :candidate

@@ -7,6 +7,8 @@ class InterviewsController < ApplicationController
   end
 
   def show
+    @templates = current_user.andand.templates
+    @documents = @interview.documents
   end
 
   def new

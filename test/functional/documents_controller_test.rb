@@ -11,7 +11,7 @@ class DocumentsControllerTest < ActionController::TestCase
   end
 
   test "should get index" do
-    get :index
+    get :index, :interview_id => @interview.id
     assert_response :success
     assert_not_nil assigns(:documents)
   end

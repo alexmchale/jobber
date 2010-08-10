@@ -15,6 +15,7 @@ class TemplatesController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @template }
+      format.json { render :json => @template }
     end
   end
 
