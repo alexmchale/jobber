@@ -11,6 +11,23 @@
 
   %p= "Your interview is scheduled to start at #{@interview.starts_at.to_s}."
 
+- if current_user
+  %p
+    = select_tag :template, options_from_collection_for_select(@templates, "id", "name")
+    = js_anchor t("documents.new.title"), "new-document"
+    = select_tag :document, options_from_collection_for_select(@documents, "id", "name")
+    = js_anchor "Load Document", "load-document"
+
+%p
+  - if @interview.current_document
+    ~ text_area_tag "interview-document", @interview.current_document.content
+  - else
+    %textarea#interview-document
+      The interview has not yet begun. Add a document to begin. Once the
+      interview starts, it will remain active for eight hours.
+  %br
+  = link_to "Save Document", "javascript:void(0)", :id => "save-document"
+
 %h2 Documents
 
 %ul
@@ -22,3 +39,5 @@
 
 %p= link_to "Chat", :controller => :chat, :action => :show, :id => @interview.id
 %p= link_to_dashboard
+
+= hidden_field_tag "interview-id", @interview.id
