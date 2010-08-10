@@ -1,13 +1,14 @@
 $(document).ready ->
 
-  templateList: $("#template")
-  documentList: $("#document")
+  templateList:      $("#template")
+  documentList:      $("#document")
   interviewDocument: $("#interview-document")
-
-  interviewId: $("#interview-id").val()
+  interviewId:       $("#interview-id").val()
 
   updateDocumentList: (selectedDocumentId) ->
+
     documentsUrl: "/documents?interview_id=" + interviewId
+
     jQuery.getJSON documentsUrl, (datas) ->
       options: ""
       for data in datas
