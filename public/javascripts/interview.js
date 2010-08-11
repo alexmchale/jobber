@@ -1,14 +1,21 @@
 (function(){
   $(document).ready(function() {
-    var createDocument, documentId, documentList, interviewDocument, interviewId, loadDocument, previousData, reloadDocument, saveDocument, syncDelay, syncTimer, templateList, updateDocumentList;
+    var createDocument, documentId, documentList, interviewDocument, interviewId, loadDocument, previousData, reloadDocument, saveDocument, setDocument, syncDelay, syncTimer, synchronizing, templateList, updateDocumentList;
     templateList = $("#template");
     documentList = $("#document");
     interviewDocument = $("#interview-document");
     interviewId = $("#interview-id").val();
     previousData = interviewDocument.val();
     documentId = documentList.val();
-    syncDelay = 1000;
-    // TODO: This should be adjusted intelligently in the future.
+    syncDelay = 500;
+    synchronizing = true;
+    setDocument = function setDocument(id, content) {
+      if (id !== undefined) {
+        documentId = id;
+      }
+      previousData = content;
+      return interviewDocument.html(content);
+    };
     updateDocumentList = function updateDocumentList(selectedDocumentId) {
       var documentsUrl;
       documentsUrl = "/documents?interview_id=" + interviewId;
@@ -32,42 +39,43 @@
       newDocumentUrl += "?interview_id=" + interviewId;
       newDocumentUrl += "&template_id=" + templateId;
       newDocumentFunc = function newDocumentFunc(data) {
-        var newDocumentId;
-        newDocumentId = data.document.id;
-        interviewDocument.html(data.document.content);
-        updateDocumentList(newDocumentId);
-        return documentId = newDocumentId;
+        updateDocumentList(data.document.id);
+        return setDocument(data.document.id, data.document.content);
       };
       return jQuery.post(newDocumentUrl, {
       }, newDocumentFunc, "json");
     };
-    loadDocument = function loadDocument(nextDocumentId) {
+    loadDocument = function loadDocument() {
       var url;
-      if (nextDocumentId === undefined) {
-        nextDocumentId = documentList.val();
-      }
-      url = "/documents/" + nextDocumentId + "?make_current=true";
+      url = "/documents/" + documentList.val() + "?make_current=true";
+      synchronizing = false;
       return jQuery.getJSON(url, function(data) {
-        interviewDocument.html(data.document.content);
-        previousData = data.document.content;
-        return documentId = data.document.id;
+        setDocument(data.document.id, data.document.content);
+        return synchronizing = true;
       });
     };
     reloadDocument = function reloadDocument() {
-      return loadDocument(documentId);
+      var url;
+      if (synchronizing) {
+        url = "/documents/" + documentId;
+        return jQuery.getJSON(url, function(data) {
+          return setDocument(undefined, data.document.content);
+        });
+      }
     };
     saveDocument = function saveDocument() {
       var payload, url;
-      documentId = documentList.val();
-      url = "/documents/" + documentId + ".json";
-      payload = {
-        document: {
-          content: interviewDocument.val()
-        },
-        _method: "PUT"
-      };
-      previousData = payload.document.content;
-      return jQuery.post(url, payload);
+      if (synchronizing) {
+        url = "/documents/" + documentId + ".json";
+        payload = {
+          document: {
+            content: interviewDocument.val()
+          },
+          _method: "PUT"
+        };
+        previousData = payload.document.content;
+        return jQuery.post(url, payload);
+      }
     };
     syncTimer = function syncTimer() {
       previousData === interviewDocument.val() ? reloadDocument() : saveDocument();

@@ -6,7 +6,13 @@ $(document).ready ->
   interviewId:       $("#interview-id").val()
   previousData:      interviewDocument.val()
   documentId:        documentList.val()
-  syncDelay:         1000 # TODO: This should be adjusted intelligently in the future.
+  syncDelay:         500
+  synchronizing:     true
+
+  setDocument: (id, content) ->
+    documentId: id if id isnt undefined
+    previousData: content
+    interviewDocument.html content
 
   updateDocumentList: (selectedDocumentId) ->
 
@@ -29,38 +35,42 @@ $(document).ready ->
     newDocumentUrl += "&template_id=" + templateId
 
     newDocumentFunc: (data) ->
-      newDocumentId: data.document.id
-      interviewDocument.html data.document.content
-      updateDocumentList newDocumentId
-      documentId: newDocumentId
+      updateDocumentList data.document.id
+      setDocument data.document.id, data.document.content
 
     jQuery.post newDocumentUrl, {}, newDocumentFunc, "json"
 
-  loadDocument: (nextDocumentId) ->
+  loadDocument: ->
 
-    nextDocumentId: documentList.val() if nextDocumentId is undefined
-    url: "/documents/" + nextDocumentId + "?make_current=true"
+    url: "/documents/" + documentList.val() + "?make_current=true"
+    synchronizing: false
 
     jQuery.getJSON url, (data) ->
-      interviewDocument.html data.document.content
-      previousData: data.document.content
-      documentId: data.document.id
+
+      setDocument data.document.id, data.document.content
+      synchronizing: true
 
   reloadDocument: ->
 
-    loadDocument documentId
+    if synchronizing
+
+      url: "/documents/" + documentId
+
+      jQuery.getJSON url, (data) ->
+        setDocument(undefined, data.document.content)
 
   saveDocument: ->
 
-    documentId: documentList.val()
-    url: "/documents/" + documentId + ".json"
-    payload: {
-      document: { content: interviewDocument.val() },
-      _method: "PUT"
-    }
-    previousData: payload.document.content
+    if synchronizing
 
-    jQuery.post url, payload
+      url: "/documents/" + documentId + ".json"
+      payload: {
+        document: { content: interviewDocument.val() },
+        _method: "PUT"
+      }
+      previousData: payload.document.content
+
+      jQuery.post url, payload
 
   syncTimer: ->
 
