@@ -4,6 +4,8 @@ $(document).ready ->
   documentList:      $("#document")
   interviewDocument: $("#interview-document")
   interviewId:       $("#interview-id").val()
+  previousData:      interviewDocument.val()
+  documentId:        documentList.val()
 
   updateDocumentList: (selectedDocumentId) ->
 
@@ -17,7 +19,7 @@ $(document).ready ->
         options += '<option value="' + doc.id + '"' + sel + '>' + doc.name + '</option>'
       documentList.html options
 
-  $("#new-document").click ->
+  createDocument: ->
 
     templateId: templateList.val()
 
@@ -28,25 +30,45 @@ $(document).ready ->
     newDocumentFunc: (data) ->
       newDocumentId: data.document.id
       interviewDocument.html data.document.content
-      updateDocumentList(newDocumentId)
+      updateDocumentList newDocumentId
+      documentId: newDocumentId
 
     jQuery.post newDocumentUrl, {}, newDocumentFunc, "json"
 
-  $("#load-document").click ->
+  loadDocument: (nextDocumentId) ->
 
-    documentId: documentList.val()
-    url: "/documents/" + documentId + "?make_current=true"
+    nextDocumentId: documentList.val() if nextDocumentId is undefined
+    url: "/documents/" + nextDocumentId + "?make_current=true"
 
     jQuery.getJSON url, (data) ->
       interviewDocument.html data.document.content
+      previousData: data.document.content
+      documentId: data.document.id
 
-  $("#save-document").click ->
+  reloadDocument: ->
+
+    loadDocument documentId
+
+  saveDocument: ->
 
     documentId: documentList.val()
-    url: "/documents/" + documentId
+    url: "/documents/" + documentId + ".json"
     payload: {
       document: { content: interviewDocument.val() },
       _method: "PUT"
     }
+    previousData: payload.document.content
 
     jQuery.post url, payload
+
+  syncTimer: ->
+
+    if previousData is interviewDocument.val()
+      reloadDocument()
+    else
+      saveDocument()
+
+  $("#new-document").click createDocument
+  $("#load-document").click loadDocument
+  $("#save-document").click saveDocument
+  setInterval syncTimer, 2500

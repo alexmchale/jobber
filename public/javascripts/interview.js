@@ -1,10 +1,12 @@
 (function(){
   $(document).ready(function() {
-    var documentList, interviewDocument, interviewId, templateList, updateDocumentList;
+    var createDocument, documentId, documentList, interviewDocument, interviewId, loadDocument, previousData, reloadDocument, saveDocument, syncTimer, templateList, updateDocumentList;
     templateList = $("#template");
     documentList = $("#document");
     interviewDocument = $("#interview-document");
     interviewId = $("#interview-id").val();
+    previousData = interviewDocument.val();
+    documentId = documentList.val();
     updateDocumentList = function updateDocumentList(selectedDocumentId) {
       var documentsUrl;
       documentsUrl = "/documents?interview_id=" + interviewId;
@@ -21,7 +23,7 @@
         return documentList.html(options);
       });
     };
-    $("#new-document").click(function() {
+    createDocument = function createDocument() {
       var newDocumentFunc, newDocumentUrl, templateId;
       templateId = templateList.val();
       newDocumentUrl = "/documents";
@@ -31,30 +33,46 @@
         var newDocumentId;
         newDocumentId = data.document.id;
         interviewDocument.html(data.document.content);
-        return updateDocumentList(newDocumentId);
+        updateDocumentList(newDocumentId);
+        return documentId = newDocumentId;
       };
       return jQuery.post(newDocumentUrl, {
       }, newDocumentFunc, "json");
-    });
-    $("#load-document").click(function() {
-      var documentId, url;
-      documentId = documentList.val();
-      url = "/documents/" + documentId + "?make_current=true";
+    };
+    loadDocument = function loadDocument(nextDocumentId) {
+      var url;
+      if (nextDocumentId === undefined) {
+        nextDocumentId = documentList.val();
+      }
+      url = "/documents/" + nextDocumentId + "?make_current=true";
       return jQuery.getJSON(url, function(data) {
-        return interviewDocument.html(data.document.content);
+        interviewDocument.html(data.document.content);
+        previousData = data.document.content;
+        return documentId = data.document.id;
       });
-    });
-    return $("#save-document").click(function() {
-      var documentId, payload, url;
+    };
+    reloadDocument = function reloadDocument() {
+      return loadDocument(documentId);
+    };
+    saveDocument = function saveDocument() {
+      var payload, url;
       documentId = documentList.val();
-      url = "/documents/" + documentId;
+      url = "/documents/" + documentId + ".json";
       payload = {
         document: {
           content: interviewDocument.val()
         },
         _method: "PUT"
       };
+      previousData = payload.document.content;
       return jQuery.post(url, payload);
-    });
+    };
+    syncTimer = function syncTimer() {
+      return previousData === interviewDocument.val() ? reloadDocument() : saveDocument();
+    };
+    $("#new-document").click(createDocument);
+    $("#load-document").click(loadDocument);
+    $("#save-document").click(saveDocument);
+    return setInterval(syncTimer, 2500);
   });
 })();
