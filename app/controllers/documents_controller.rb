@@ -14,7 +14,7 @@ class DocumentsController < ApplicationController
   def show
     @document = Document.find(params[:id])
 
-    @document.current! if params[:make_current]
+    @document.current! if params[:make_current] && current_user
 
     respond_to do |format|
       format.html # show.html.erb
@@ -85,6 +85,17 @@ class DocumentsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(documents_url) }
       format.xml  { head :ok }
+    end
+  end
+
+  def current
+    @interview = Interview.find(params[:id])
+    @document = @interview.current_document
+
+    respond_to do |format|
+      format.html { redirect_to(document_path(@document)) }
+      format.xml  { render :xml => @document }
+      format.json { render :json => @document }
     end
   end
 

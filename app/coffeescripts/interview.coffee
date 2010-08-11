@@ -54,10 +54,14 @@ $(document).ready ->
 
     if synchronizing
 
-      url: "/documents/" + documentId
+      url: "/documents/current/" + interviewId
 
       jQuery.getJSON url, (data) ->
-        setDocument(undefined, data.document.content)
+
+        if synchronizing
+
+          setDocument data.document.id, data.document.content
+          updateDocumentList(data.document.id) if parseInt(documentList.val()) isnt data.document.id
 
   saveDocument: ->
 
@@ -81,7 +85,7 @@ $(document).ready ->
 
     setTimeout syncTimer, syncDelay
 
+  documentList.change loadDocument
   $("#new-document").click createDocument
-  $("#load-document").click loadDocument
   $("#save-document").click saveDocument
   syncTimer()

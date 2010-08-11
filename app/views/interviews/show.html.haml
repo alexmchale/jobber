@@ -16,7 +16,6 @@
     = select_tag :template, options_from_collection_for_select(@templates, "id", "name")
     = js_anchor t("documents.new.title"), "new-document"
     = select_tag :document, options_from_collection_for_select(@documents, "id", "name", @interview.current_document.andand.id)
-    = js_anchor "Load Document", "load-document"
 
 %p
   - if @interview.current_document

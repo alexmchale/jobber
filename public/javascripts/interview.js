@@ -57,9 +57,14 @@
     reloadDocument = function reloadDocument() {
       var url;
       if (synchronizing) {
-        url = "/documents/" + documentId;
+        url = "/documents/current/" + interviewId;
         return jQuery.getJSON(url, function(data) {
-          return setDocument(undefined, data.document.content);
+          if (synchronizing) {
+            setDocument(data.document.id, data.document.content);
+            if (parseInt(documentList.val()) !== data.document.id) {
+              return updateDocumentList(data.document.id);
+            }
+          }
         });
       }
     };
@@ -81,8 +86,8 @@
       previousData === interviewDocument.val() ? reloadDocument() : saveDocument();
       return setTimeout(syncTimer, syncDelay);
     };
+    documentList.change(loadDocument);
     $("#new-document").click(createDocument);
-    $("#load-document").click(loadDocument);
     $("#save-document").click(saveDocument);
     return syncTimer();
   });
