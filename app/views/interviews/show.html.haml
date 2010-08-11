@@ -28,15 +28,6 @@
   %br
   = link_to "Save Document", "javascript:void(0)", :id => "save-document"
 
-%h2 Documents
-
-%ul
-
-  - @interview.documents.each do |doc|
-    %li= link_to "Document #{doc.id}", edit_document_path(doc)
-
-%p= link_to "Create New Document", new_document_path(:interview_id => @interview)
-
 %p= link_to "Chat", :controller => :chat, :action => :show, :id => @interview.id
 %p= link_to_dashboard
 
