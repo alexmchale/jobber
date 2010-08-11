@@ -1,10 +1,13 @@
-require 'autotest/growl'
-#require 'redgreen/autotest'
+if `uname` =~ /darwin/i
+  require 'autotest/growl'
 
-# Autotest::Growl::show_modified_files = true
-# Autotest::Growl::one_notification_per_run = true
-# Autotest::Growl::clear_terminal = false
-# Autotest::Growl::hide_label = true
+  # Autotest::Growl::show_modified_files = true
+  # Autotest::Growl::one_notification_per_run = true
+  # Autotest::Growl::clear_terminal = false
+  # Autotest::Growl::hide_label = true
+end
+
+#require 'redgreen/autotest'
 
 # Override autotest default magic to rerun all tests every time a
 # change is detected on the file system.
