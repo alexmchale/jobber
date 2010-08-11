@@ -6,6 +6,7 @@ $(document).ready ->
   interviewId:       $("#interview-id").val()
   previousData:      interviewDocument.val()
   documentId:        documentList.val()
+  syncDelay:         1000 # TODO: This should be adjusted intelligently in the future.
 
   updateDocumentList: (selectedDocumentId) ->
 
@@ -68,7 +69,9 @@ $(document).ready ->
     else
       saveDocument()
 
+    setTimeout syncTimer, syncDelay
+
   $("#new-document").click createDocument
   $("#load-document").click loadDocument
   $("#save-document").click saveDocument
-  setInterval syncTimer, 2500
+  syncTimer()

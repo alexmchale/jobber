@@ -1,12 +1,14 @@
 (function(){
   $(document).ready(function() {
-    var createDocument, documentId, documentList, interviewDocument, interviewId, loadDocument, previousData, reloadDocument, saveDocument, syncTimer, templateList, updateDocumentList;
+    var createDocument, documentId, documentList, interviewDocument, interviewId, loadDocument, previousData, reloadDocument, saveDocument, syncDelay, syncTimer, templateList, updateDocumentList;
     templateList = $("#template");
     documentList = $("#document");
     interviewDocument = $("#interview-document");
     interviewId = $("#interview-id").val();
     previousData = interviewDocument.val();
     documentId = documentList.val();
+    syncDelay = 1000;
+    // TODO: This should be adjusted intelligently in the future.
     updateDocumentList = function updateDocumentList(selectedDocumentId) {
       var documentsUrl;
       documentsUrl = "/documents?interview_id=" + interviewId;
@@ -68,11 +70,12 @@
       return jQuery.post(url, payload);
     };
     syncTimer = function syncTimer() {
-      return previousData === interviewDocument.val() ? reloadDocument() : saveDocument();
+      previousData === interviewDocument.val() ? reloadDocument() : saveDocument();
+      return setTimeout(syncTimer, syncDelay);
     };
     $("#new-document").click(createDocument);
     $("#load-document").click(loadDocument);
     $("#save-document").click(saveDocument);
-    return setInterval(syncTimer, 2500);
+    return syncTimer();
   });
 })();
