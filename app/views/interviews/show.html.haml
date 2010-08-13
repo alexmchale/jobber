@@ -1,5 +1,6 @@
 - content_for :head do
   = javascript_include_tag "editor"
+  = javascript_include_tag "chat"
 
 - if current_user
 
@@ -24,6 +25,10 @@
     %textarea#interview-document
       The interview has not yet begun. Add a document to begin. Once the
       interview starts, it will remain active for eight hours.
+
+%p
+  #public-out
+  = text_field_tag "public-in"
 
 %p= link_to "Chat", :controller => :chat, :action => :show, :id => @interview.id
 %p= link_to_dashboard
