@@ -1,4 +1,4 @@
-(function(){
+(function() {
   $(document).ready(function() {
     var createDocument, documentId, documentList, interviewDocument, interviewId, loadDocument, previousData, reloadDocument, saveDocument, setDocument, syncDelay, syncTimer, synchronizing, templateList, updateDocumentList;
     templateList = $("#template");
@@ -9,22 +9,26 @@
     documentId = documentList.val();
     syncDelay = 500;
     synchronizing = true;
-    setDocument = function setDocument(id, content) {
-      if (id !== undefined) {
-        documentId = id;
-      }
-      previousData = content;
+    setDocument = function(id, content) {
+      ({
+        documentId: (function() {
+          if (id !== undefined) {
+            return id;
+          }
+        })(),
+        previousData: content
+      });
       return interviewDocument.html(content);
     };
-    updateDocumentList = function updateDocumentList(selectedDocumentId) {
+    updateDocumentList = function(selectedDocumentId) {
       var documentsUrl;
       documentsUrl = "/documents?interview_id=" + interviewId;
       return jQuery.getJSON(documentsUrl, function(datas) {
-        var __a, __b, data, doc, options, sel;
+        var _a, _b, _c, data, doc, options, sel;
         options = "";
-        __a = datas;
-        for (__b = 0; __b < __a.length; __b++) {
-          data = __a[__b];
+        _b = datas;
+        for (_a = 0, _c = _b.length; _a < _c; _a++) {
+          data = _b[_a];
           doc = data.document;
           sel = doc.id === selectedDocumentId ? ' selected="selected"' : '';
           options += '<option value="' + doc.id + '"' + sel + '>' + doc.name + '</option>';
@@ -32,29 +36,28 @@
         return documentList.html(options);
       });
     };
-    createDocument = function createDocument() {
+    createDocument = function() {
       var newDocumentFunc, newDocumentUrl, templateId;
       templateId = templateList.val();
       newDocumentUrl = "/documents";
       newDocumentUrl += "?interview_id=" + interviewId;
       newDocumentUrl += "&template_id=" + templateId;
-      newDocumentFunc = function newDocumentFunc(data) {
+      newDocumentFunc = function(data) {
         updateDocumentList(data.document.id);
         return setDocument(data.document.id, data.document.content);
       };
-      return jQuery.post(newDocumentUrl, {
-      }, newDocumentFunc, "json");
+      return jQuery.post(newDocumentUrl, {}, newDocumentFunc, "json");
     };
-    loadDocument = function loadDocument() {
+    loadDocument = function() {
       var url;
       url = "/documents/" + documentList.val() + "?make_current=true";
       synchronizing = false;
       return jQuery.getJSON(url, function(data) {
         setDocument(data.document.id, data.document.content);
-        return synchronizing = true;
+        return (synchronizing = true);
       });
     };
-    reloadDocument = function reloadDocument() {
+    reloadDocument = function() {
       var url;
       if (synchronizing) {
         url = "/documents/current/" + interviewId;
@@ -68,7 +71,7 @@
         });
       }
     };
-    saveDocument = function saveDocument() {
+    saveDocument = function() {
       var payload, url;
       if (synchronizing) {
         url = "/documents/" + documentId + ".json";
@@ -82,8 +85,12 @@
         return jQuery.post(url, payload);
       }
     };
-    syncTimer = function syncTimer() {
-      previousData === interviewDocument.val() ? reloadDocument() : saveDocument();
+    syncTimer = function() {
+      if (previousData === interviewDocument.val()) {
+        reloadDocument();
+      } else {
+        saveDocument();
+      };
       return setTimeout(syncTimer, syncDelay);
     };
     documentList.change(loadDocument);

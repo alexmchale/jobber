@@ -1,3 +1,3 @@
 task :coffee do
-  sh "coffee -w app/coffeescripts/*.coffee -o public/javascripts/"
+  sh "coffee -c -w -o public/javascripts/ app/coffeescripts/*.coffee"
 end
