@@ -10,7 +10,6 @@ gem 'andand'
 gem 'clearance'
 gem 'formtastic', :git => "http://github.com/justinfrench/formtastic.git", :branch => "rails3"
 gem 'haml'
-gem 'coffee-script', '>= 0.3.2'
 
 group :development do
   gem 'wirble'

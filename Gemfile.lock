@@ -51,7 +51,6 @@ GEM
     builder (2.1.2)
     clearance (0.9.0.rc5)
       rails (~> 3.0.0.beta4)
-    coffee-script (0.3.2)
     compass (0.10.3)
       haml (>= 3.0.4)
     erubis (2.6.6)
@@ -119,7 +118,6 @@ DEPENDENCIES
   autotest-rails
   awesome_print
   clearance
-  coffee-script (>= 0.3.2)
   compass
   factory_girl
   factory_girl_rails
