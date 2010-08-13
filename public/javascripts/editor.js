@@ -7,17 +7,13 @@
     interviewId = $("#interview-id").val();
     previousData = interviewDocument.val();
     documentId = documentList.val();
-    syncDelay = 500;
+    syncDelay = 1000;
     synchronizing = true;
     setDocument = function(id, content) {
-      ({
-        documentId: (function() {
-          if (id !== undefined) {
-            return id;
-          }
-        })(),
-        previousData: content
-      });
+      if (id !== undefined) {
+        documentId = id;
+      }
+      previousData = content;
       return interviewDocument.html(content);
     };
     updateDocumentList = function(selectedDocumentId) {
@@ -63,6 +59,7 @@
         url = "/documents/current/" + interviewId;
         return jQuery.getJSON(url, function(data) {
           if (synchronizing) {
+            syncDelay = previousData === data.document.content ? 5000 : 1000;
             setDocument(data.document.id, data.document.content);
             if (parseInt(documentList.val()) !== data.document.id) {
               return updateDocumentList(data.document.id);

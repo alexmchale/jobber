@@ -6,12 +6,12 @@ $(document).ready ->
   interviewId =       $("#interview-id").val()
   previousData =      interviewDocument.val()
   documentId =        documentList.val()
-  syncDelay =         500
+  syncDelay =         1000
   synchronizing =     true
 
   setDocument = (id, content) ->
-    documentId: id if id isnt undefined
-    previousData: content
+    documentId = id if id isnt undefined
+    previousData = content
     interviewDocument.html content
 
   updateDocumentList = (selectedDocumentId) ->
@@ -60,6 +60,7 @@ $(document).ready ->
 
         if synchronizing
 
+          syncDelay = if previousData is data.document.content then 5000 else 1000
           setDocument data.document.id, data.document.content
           updateDocumentList(data.document.id) if parseInt(documentList.val()) isnt data.document.id
 
