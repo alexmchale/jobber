@@ -27,10 +27,9 @@
       interview starts, it will remain active for eight hours.
 
 %p
-  #public-out
+  #public-out.chat-out
   = text_field_tag "public-in"
 
-%p= link_to "Chat", :controller => :chat, :action => :show, :id => @interview.id
 %p= link_to_dashboard
 
 = hidden_field_tag "interview-id", @interview.id

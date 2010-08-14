@@ -1,7 +1,19 @@
 /* line 1, ../../app/stylesheets/default.sass */
+body {
+  padding: 2em;
+}
+
+/* line 4, ../../app/stylesheets/default.sass */
 #interview-document {
   font-family: monospace;
   background-color: #dddddd;
   width: 500px;
-  height: 300px;
+  height: 250px;
+}
+
+/* line 10, ../../app/stylesheets/default.sass */
+.chat-out {
+  height: 250px;
+  overflow: auto;
+  background-color: #dddddd;
 }
