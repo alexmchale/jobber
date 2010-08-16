@@ -1,4 +1,5 @@
 (function() {
+  var __slice = Array.prototype.slice;
   jQuery.fn.bufferInput = function(callback) {
     var history, input, pointer, processInput;
     history = [];
@@ -33,5 +34,14 @@
     };
     input.keydown(processInput);
     return $(this);
+  };
+  window.curry = function(func) {
+    var params1;
+    params1 = __slice.call(arguments, 1);
+    return function() {
+      var params2;
+      params2 = __slice.call(arguments, 0);
+      return func.apply(this, params1.concat(params2));
+    };
   };
 })();

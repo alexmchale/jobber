@@ -40,3 +40,6 @@ jQuery.fn.bufferInput = (callback) ->
   input.keydown processInput
 
   $(this)
+
+window.curry = (func, params1...) ->
+  (params2...) -> func(params1..., params2...)

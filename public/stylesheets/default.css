@@ -25,13 +25,13 @@ body {
 /* line 17, ../../app/stylesheets/default.sass */
 #public-chat {
   float: left;
-  width: 50%;
+  width: 48%;
   background-color: green;
 }
 
 /* line 22, ../../app/stylesheets/default.sass */
 #private-chat {
   float: right;
-  width: 50%;
+  width: 48%;
   background-color: red;
 }
