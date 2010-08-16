@@ -1,31 +1,41 @@
 (function() {
   jQuery(document).ready(function() {
-    var appendMessage, interviewId, lastChatId, pollChat, pollDelay, pollUrl, postUrl, publicOut, sendChat;
+    var appendMessage, interviewId, lastChatId, pollChat, pollDelay, pollUrl, postUrl, privateOut, publicOut, sendChat, sendPrivateChat, sendPublicChat;
     pollDelay = 1000;
     interviewId = $("#interview-id").val();
     postUrl = ("/chat/" + (interviewId));
     lastChatId = 0;
     publicOut = $("#public-out");
+    privateOut = $("#private-out");
     appendMessage = function(cm) {
-      var txt;
+      var channel, txt;
       if (lastChatId < cm.id) {
+        channel = cm.channel === "private" ? privateOut : publicOut;
         txt = ("<p class='chat_message'>" + (cm.message) + "</p>");
-        publicOut.append(txt);
-        publicOut.get(0).scrollTop = publicOut.get(0).scrollHeight;
+        channel.append(txt);
+        channel.get(0).scrollTop = channel.get(0).scrollHeight;
         return (lastChatId = cm.id);
       }
     };
     pollUrl = function() {
       return "/chat/" + (interviewId) + "?after=" + (lastChatId);
     };
-    sendChat = function(txt) {
-      var response;
+    sendChat = function(channel, txt) {
+      var payload, response;
+      payload = {
+        channel: channel,
+        message: txt
+      };
       response = function(data) {
         return appendMessage(data.chat_message);
       };
-      return jQuery.post(postUrl, {
-        message: txt
-      }, response, "json");
+      return jQuery.post(postUrl, payload, response, "json");
+    };
+    sendPublicChat = function(txt) {
+      return sendChat("public", txt);
+    };
+    sendPrivateChat = function(txt) {
+      return sendChat("private", txt);
     };
     pollChat = function() {
       return jQuery.getJSON(pollUrl(), function(data) {
@@ -38,7 +48,8 @@
         return setTimeout(pollChat, pollDelay);
       });
     };
-    $("#public-in").bufferInput(sendChat);
+    $("#public-in").bufferInput(sendPublicChat);
+    $("#private-in").bufferInput(sendPrivateChat);
     return pollChat();
   });
 })();

@@ -26,10 +26,15 @@
       The interview has not yet begun. Add a document to begin. Once the
       interview starts, it will remain active for eight hours.
 
-%p
-  #public-out.chat-out
-  = text_field_tag "public-in"
+#chat
+  #public-chat
+    #public-out.chat-out
+    = text_field_tag "public-in"
 
-%p= link_to_dashboard
+  #private-chat
+    #private-out.chat-out
+    = text_field_tag "private-in"
+
+%p.clearfix= link_to_dashboard
 
 = hidden_field_tag "interview-id", @interview.id

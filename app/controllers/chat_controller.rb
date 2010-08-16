@@ -5,6 +5,7 @@ class ChatController < ApplicationController
   def show
     messages = @interview.chat_messages.order(:created_at)
     messages = messages.where("id > ?", params[:after]) if params[:after]
+    messages = messages.where(:channel => "public") if !@interview.authorized?(current_user)
 
     respond_to do |format|
       format.html
@@ -14,7 +15,16 @@ class ChatController < ApplicationController
   end
 
   def create
-    @cm = @interview.chat_messages.create! :user => current_user, :message => params[:message]
+    channel = "private" if params[:channel] == "private"
+    channel = "public" if !channel || !@interview.authorized?(current_user)
+
+    options = {
+      :user    => current_user,
+      :message => params[:message],
+      :channel => channel
+    }
+
+    @cm = @interview.chat_messages.create!(options)
 
     respond_to do |format|
       format.html { render :show }

@@ -15,5 +15,23 @@ body {
 .chat-out {
   height: 250px;
   overflow: auto;
-  background-color: #dddddd;
+}
+
+/* line 14, ../../app/stylesheets/default.sass */
+.clearfix {
+  clear: both;
+}
+
+/* line 17, ../../app/stylesheets/default.sass */
+#public-chat {
+  float: left;
+  width: 50%;
+  background-color: green;
+}
+
+/* line 22, ../../app/stylesheets/default.sass */
+#private-chat {
+  float: right;
+  width: 50%;
+  background-color: red;
 }

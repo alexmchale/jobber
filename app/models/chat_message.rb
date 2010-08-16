@@ -5,5 +5,6 @@ class ChatMessage < ActiveRecord::Base
 
   validates_associated :interview
   validates_presence_of :message
+  validates_inclusion_of :channel, :in => %w( public private )
 
 end

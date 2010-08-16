@@ -10,4 +10,9 @@ class ChatMessageTest < ActiveSupport::TestCase
   should belong_to :user
   should validate_presence_of :message
 
+  should allow_value("public").for(:channel)
+  should allow_value("private").for(:channel)
+  should_not allow_value(nil).for(:channel)
+  should_not allow_value("quantum").for(:channel)
+
 end

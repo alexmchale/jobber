@@ -5,26 +5,35 @@ jQuery(document).ready ->
   postUrl      = "/chat/#{interviewId}"
   lastChatId   = 0
   publicOut    = $("#public-out")
+  privateOut   = $("#private-out")
 
   appendMessage = (cm) ->
     if lastChatId < cm.id
+      channel = if cm.channel is "private" then privateOut else publicOut
       txt = "<p class='chat_message'>#{cm.message}</p>"
-      publicOut.append txt
-      publicOut.get(0).scrollTop = publicOut.get(0).scrollHeight
+      channel.append txt
+      channel.get(0).scrollTop = channel.get(0).scrollHeight
       lastChatId = cm.id
 
   pollUrl = ->
     "/chat/#{interviewId}?after=#{lastChatId}"
 
-  sendChat = (txt) ->
+  sendChat = (channel, txt) ->
+    payload =
+      channel: channel
+      message: txt
     response = (data) ->
       appendMessage data.chat_message
-    jQuery.post postUrl, { message: txt }, response, "json"
+    jQuery.post postUrl, payload, response, "json"
+
+  sendPublicChat  = (txt) -> sendChat "public", txt
+  sendPrivateChat = (txt) -> sendChat "private", txt
 
   pollChat = ->
     jQuery.getJSON pollUrl(), (data) ->
       appendMessage(c.chat_message) for c in data
       setTimeout pollChat, pollDelay
 
-  $("#public-in").bufferInput sendChat
+  $("#public-in").bufferInput sendPublicChat
+  $("#private-in").bufferInput sendPrivateChat
   pollChat()
