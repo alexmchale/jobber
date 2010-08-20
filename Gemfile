@@ -10,6 +10,7 @@ gem 'andand'
 gem 'clearance'
 gem 'formtastic', :git => "http://github.com/justinfrench/formtastic.git", :branch => "rails3"
 gem 'haml'
+gem 'therubyracer', :require => 'v8'
 
 group :development do
   gem 'wirble'
