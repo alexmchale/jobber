@@ -1,46 +1,41 @@
 $(document).ready ->
 
-  templateList =      $("#template")
-  documentList =      $("#document")
+  templateList      = $("#template")
+  documentList      = $("#document")
   interviewDocument = $("#interview-document")
-  interviewId =       $("#interview-id").val()
-  previousData =      interviewDocument.val()
-  documentId =        documentList.val()
-  syncDelay =         1000
-  synchronizing =     true
+  interviewId       = $("#interview-id").val()
+  serverData        = interviewDocument.val()
+  documentId        = documentList.val()
+  syncDelay         = 500
+  synchronizing     = true
+  dmp               = new diff_match_patch()
+  patchLevel        = $("#patch-level").val()
 
-  setDocument = (id, content) ->
-    documentId = id if id isnt undefined
-    previousData = content
-    interviewDocument.html content
-
-  updateDocumentList = (selectedDocumentId) ->
-
-    documentsUrl = "/documents?interview_id=" + interviewId
-
+  updateDocumentList = ->
+    documentsUrl = "/documents?interview_id=#{interviewId}"
     jQuery.getJSON documentsUrl, (datas) ->
-      options = ""
-      for data in datas
+      options = for data in datas
         doc = data.document
-        sel = if doc.id is selectedDocumentId then ' selected="selected"' else ''
-        options += '<option value="' + doc.id + '"' + sel + '>' + doc.name + '</option>'
-      documentList.html options
+        sel = if doc.id == documentId then ' selected="selected"' else ''
+        "<option value='#{doc.id}'#{sel}>#{doc.name}</option>"
+      documentList.html options.join("")
 
   createDocument = ->
 
-    templateId = templateList.val()
-
-    newDocumentUrl  = "/documents"
-    newDocumentUrl += "?interview_id=" + interviewId
-    newDocumentUrl += "&template_id=" + templateId
+    context =
+      interview_id: interviewId
+      template_id:  templateList.val()
 
     newDocumentFunc = (data) ->
       updateDocumentList data.document.id
       setDocument data.document.id, data.document.content
 
-    jQuery.post newDocumentUrl, {}, newDocumentFunc, "json"
+    jQuery.post "/documents", context, newDocumentFunc, "json"
 
   loadDocument = ->
+
+    setDocument documentList.val(), ""
+    patchLevel = 0
 
     url = "/documents/" + documentList.val() + "?make_current=true"
     synchronizing = false
@@ -50,43 +45,79 @@ $(document).ready ->
       setDocument data.document.id, data.document.content
       synchronizing = true
 
-  reloadDocument = ->
+  updateDocument = (destinationData) ->
 
-    if synchronizing
+    diff   = dmp.diff_main(interviewDocument.val(), destinationData)
+    cursor = interviewDocument.getSelection() || { start: 0, end: 0 }
+    offset = 0
 
-      url = "/documents/current/" + interviewId
+    interviewDocument.setSelection 0, 0
 
-      jQuery.getJSON url, (data) ->
+    for [ type, text ] in diff
 
-        if synchronizing
+      switch type
+        when -1
+          interviewDocument.setSelection offset, offset + text.length
+          interviewDocument.replaceSelection ""
+          if offset < cursor.start
+            cursor.start -= text.length
+            cursor.end   -= text.length
+        when 0
+          offset += text.length
+        when +1
+          interviewDocument.setCaretPos offset + 1
+          interviewDocument.insertAtCaretPos text
+          if offset < cursor.start
+            cursor.start += text.length
+            cursor.end   += text.length
+          offset += text.length
 
-          syncDelay = if previousData is data.document.content then 5000 else 1000
-          setDocument data.document.id, data.document.content
-          updateDocumentList(data.document.id) if parseInt(documentList.val()) isnt data.document.id
+    interviewDocument.setSelection cursor.start, cursor.end
 
-  saveDocument = ->
+  merge = (data) ->
 
-    if synchronizing
+    if patch = data?.document_patch
 
-      url = "/documents/" + documentId + ".json"
-      payload = {
-        document: { content: interviewDocument.val() },
-        _method: "PUT"
-      }
-      previousData = payload.document.content
+      localData = interviewDocument.val()
 
-      jQuery.post url, payload
+      if patch.content != localData
 
-  syncTimer = ->
+        d1 = dmp.diff_main(serverData, localData)
+        p1 = dmp.patch_make(serverData, localData, d1)
+        r1 = dmp.patch_apply(p1, patch.content)
 
-    if previousData is interviewDocument.val()
-      reloadDocument()
+        updateDocument r1[0]
+
+      serverData = patch.content
+      patchLevel = patch.id
+
     else
-      saveDocument()
+
+      alert "clearing server info"
+
+      serverData = ""
+      patchLevel = 0
 
     setTimeout syncTimer, syncDelay
 
+  syncTimer = ->
+
+    return unless synchronizing
+
+    patchUrl  = "/documents/patch/#{documentId}"
+    localData = interviewDocument.val()
+
+    if serverData != localData
+      context =
+        patch_id: patchLevel
+        content:  localData
+
+      serverData = localData
+
+      jQuery.post patchUrl, context, merge, "json"
+    else
+      jQuery.getJSON patchUrl, merge
+
   documentList.change loadDocument
   $("#new-document").click createDocument
-  $("#save-document").click saveDocument
   syncTimer()

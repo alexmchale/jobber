@@ -7,29 +7,30 @@ body {
 #interview-document {
   font-family: monospace;
   background-color: #dddddd;
-  width: 500px;
+  width: 600px;
   height: 250px;
+  overflow: auto;
 }
 
-/* line 10, ../../app/stylesheets/default.sass */
+/* line 11, ../../app/stylesheets/default.sass */
 .chat-out {
   height: 250px;
   overflow: auto;
 }
 
-/* line 14, ../../app/stylesheets/default.sass */
+/* line 15, ../../app/stylesheets/default.sass */
 .clearfix {
   clear: both;
 }
 
-/* line 17, ../../app/stylesheets/default.sass */
+/* line 18, ../../app/stylesheets/default.sass */
 #public-chat {
   float: left;
   width: 48%;
   background-color: green;
 }
 
-/* line 22, ../../app/stylesheets/default.sass */
+/* line 23, ../../app/stylesheets/default.sass */
 #private-chat {
   float: right;
   width: 48%;
