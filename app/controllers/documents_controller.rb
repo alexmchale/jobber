@@ -16,10 +16,12 @@ class DocumentsController < ApplicationController
 
     @document.current! if params[:make_current] && current_user
 
+    @details = { :document => @document, :patch_id => @document.patches.last.andand.id.to_i }
+
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @document }
-      format.json { render :json => @document }
+      format.xml  { render :xml => @details }
+      format.json { render :json => @details }
     end
   end
 
@@ -90,12 +92,13 @@ class DocumentsController < ApplicationController
 
   def current
     @interview = Interview.find(params[:id])
-    @document = @interview.current_document
+    @document  = @interview.current_document
+    @patch     = @document.last_patch
 
     respond_to do |format|
       format.html { redirect_to(document_path(@document)) }
-      format.xml  { render :xml => @document }
-      format.json { render :json => @document }
+      format.xml  { render :xml => @patch }
+      format.json { render :json => @patch }
     end
   end
 
@@ -104,12 +107,15 @@ class DocumentsController < ApplicationController
   #   :content      the new version of the document
   #   :patch_id     the version of the document to patch
   def patch
-    @document = Document.find(params[:id])
+    @interview = Interview.find_by_id(params[:interview_id])
+    @document = @interview.current_document if params[:id] == "current"
+    @document ||= Document.find(params[:id])
+    @document.current! if params.has_key?(:make_current) && current_user
 
     if request.post?
       @patch = @document.patch!(params[:patch_id], params[:content])
     else
-      @patch = @document.patches.order(:created_at).last
+      @patch = @document.last_patch
     end
 
     respond_to do |format|

@@ -53,4 +53,8 @@ class Document < ActiveRecord::Base
     next_patch.destroy if next_patch
   end
 
+  def last_patch
+    self.patches.order(:created_at).last || self.patch!(nil, "")
+  end
+
 end

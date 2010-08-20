@@ -45,12 +45,14 @@
     };
     loadDocument = function() {
       var url;
-      setDocument(documentList.val(), "");
       patchLevel = 0;
-      url = "/documents/" + documentList.val() + "?make_current=true";
+      url = ("/documents/patch/" + (documentList.val()) + "?make_current=true");
       synchronizing = false;
       return jQuery.getJSON(url, function(data) {
-        setDocument(data.document.id, data.document.content);
+        documentId = data.document_patch.document_id;
+        serverData = data.document_patch.content;
+        patchLevel = data.document_patch.id;
+        interviewDocument.val(serverData);
         return (synchronizing = true);
       });
     };
@@ -93,7 +95,11 @@
       var d1, localData, p1, patch, r1;
       if ((patch = typeof data === "undefined" || data == undefined ? undefined : data.document_patch)) {
         localData = interviewDocument.val();
-        if (patch.content !== localData) {
+        if (documentId !== patch.document_id) {
+          documentId = patch.document_id;
+          interviewDocument.val(patch.content);
+          documentList.val(documentId);
+        } else if (patch.content !== localData) {
           d1 = dmp.diff_main(serverData, localData);
           p1 = dmp.patch_make(serverData, localData, d1);
           r1 = dmp.patch_apply(p1, patch.content);
@@ -102,18 +108,18 @@
         serverData = patch.content;
         patchLevel = patch.id;
       } else {
-        alert("clearing server info");
         serverData = "";
         patchLevel = 0;
       }
       return setTimeout(syncTimer, syncDelay);
     };
     syncTimer = function() {
-      var context, localData, patchUrl;
+      var context, localData, patchUrl, queryUrl;
       if (!(synchronizing)) {
         return null;
       }
       patchUrl = ("/documents/patch/" + (documentId));
+      queryUrl = ("/documents/patch/current?interview_id=" + (interviewId));
       localData = interviewDocument.val();
       if (serverData !== localData) {
         context = {
@@ -123,7 +129,7 @@
         serverData = localData;
         return jQuery.post(patchUrl, context, merge, "json");
       } else {
-        return jQuery.getJSON(patchUrl, merge);
+        return jQuery.getJSON(queryUrl, merge);
       }
     };
     documentList.change(loadDocument);

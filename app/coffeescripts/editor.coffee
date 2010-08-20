@@ -21,30 +21,27 @@ $(document).ready ->
       documentList.html options.join("")
 
   createDocument = ->
-
     context =
       interview_id: interviewId
       template_id:  templateList.val()
-
     newDocumentFunc = (data) ->
       updateDocumentList data.document.id
       setDocument data.document.id, data.document.content
-
     jQuery.post "/documents", context, newDocumentFunc, "json"
 
   loadDocument = ->
-
-    setDocument documentList.val(), ""
-    patchLevel = 0
-
-    url = "/documents/" + documentList.val() + "?make_current=true"
+    patchLevel    = 0
+    url           = "/documents/patch/#{documentList.val()}?make_current=true"
     synchronizing = false
-
     jQuery.getJSON url, (data) ->
-
-      setDocument data.document.id, data.document.content
+      documentId = data.document_patch.document_id
+      serverData = data.document_patch.content
+      patchLevel = data.document_patch.id
+      interviewDocument.val serverData
       synchronizing = true
 
+  # Turn the current document into the given one, while maintaining the cursor
+  # position. This allows the user to keep typing after an update.
   updateDocument = (destinationData) ->
 
     diff   = dmp.diff_main(interviewDocument.val(), destinationData)
@@ -80,7 +77,17 @@ $(document).ready ->
 
       localData = interviewDocument.val()
 
-      if patch.content != localData
+      if documentId != patch.document_id
+
+        # We have switched documents, throw away any pending changes.
+
+        documentId = patch.document_id
+        interviewDocument.val patch.content
+        documentList.val documentId
+
+      else if patch.content != localData
+
+        # The data on the server has changed, update the local data.
 
         d1 = dmp.diff_main(serverData, localData)
         p1 = dmp.patch_make(serverData, localData, d1)
@@ -93,8 +100,6 @@ $(document).ready ->
 
     else
 
-      alert "clearing server info"
-
       serverData = ""
       patchLevel = 0
 
@@ -105,6 +110,7 @@ $(document).ready ->
     return unless synchronizing
 
     patchUrl  = "/documents/patch/#{documentId}"
+    queryUrl  = "/documents/patch/current?interview_id=#{interviewId}"
     localData = interviewDocument.val()
 
     if serverData != localData
@@ -116,7 +122,7 @@ $(document).ready ->
 
       jQuery.post patchUrl, context, merge, "json"
     else
-      jQuery.getJSON patchUrl, merge
+      jQuery.getJSON queryUrl, merge
 
   documentList.change loadDocument
   $("#new-document").click createDocument
