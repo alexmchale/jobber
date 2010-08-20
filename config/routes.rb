@@ -5,6 +5,9 @@ Jobber::Application.routes.draw do
   post "chat/:id" => "chat#create"
   get "documents/current/:id" => "documents#current"
 
+  match "documents/patch/:id" => "documents#patch", :via => [ :get, :post ]
+  match "documents/patch/:id.:format" => "documents#patch", :via => [ :get, :post ]
+
   resources :interviews
   resources :templates
   resources :documents

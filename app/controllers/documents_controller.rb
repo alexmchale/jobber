@@ -99,4 +99,24 @@ class DocumentsController < ApplicationController
     end
   end
 
+  # Takes three parameters:
+  #   :id           the document id
+  #   :content      the new version of the document
+  #   :patch_id     the version of the document to patch
+  def patch
+    @document = Document.find(params[:id])
+
+    if request.post?
+      @patch = @document.patch!(params[:patch_id], params[:content])
+    else
+      @patch = @document.patches.order(:created_at).last
+    end
+
+    respond_to do |format|
+      format.html { redirect_to(document_path(@document)) }
+      format.xml  { render :xml => @patch }
+      format.json { render :json => @patch }
+    end
+  end
+
 end
