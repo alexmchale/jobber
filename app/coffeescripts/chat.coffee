@@ -34,8 +34,8 @@ jQuery(document).ready ->
       appendMessage(c.chat_message) for c in data
       setTimeout pollChat, pollDelay
 
-  $("#public-out").click -> $("#public-in").focus()
-  $("#private-out").click -> $("#private-in").focus()
-  $("#public-in").bufferInput sendPublicChat
-  $("#private-in").bufferInput sendPrivateChat
-  pollChat()
+  #$("#public-out").click -> $("#public-in").focus()
+  #$("#private-out").click -> $("#private-in").focus()
+  #$("#public-in").bufferInput sendPublicChat
+  #$("#private-in").bufferInput sendPrivateChat
+  #pollChat()

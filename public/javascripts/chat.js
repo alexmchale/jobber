@@ -37,7 +37,7 @@
     sendPrivateChat = function(txt) {
       return sendChat("private", txt);
     };
-    pollChat = function() {
+    return (pollChat = function() {
       return jQuery.getJSON(pollUrl(), function(data) {
         var _a, _b, _c, c;
         _b = data;
@@ -47,15 +47,6 @@
         }
         return setTimeout(pollChat, pollDelay);
       });
-    };
-    $("#public-out").click(function() {
-      return $("#public-in").focus();
     });
-    $("#private-out").click(function() {
-      return $("#private-in").focus();
-    });
-    $("#public-in").bufferInput(sendPublicChat);
-    $("#private-in").bufferInput(sendPrivateChat);
-    return pollChat();
   });
 })();
