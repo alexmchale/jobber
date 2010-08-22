@@ -7,7 +7,7 @@
     interviewId = $("#interview-id").val();
     serverData = interviewDocument.val();
     documentId = documentList.val();
-    syncDelay = 500;
+    syncDelay = 1000;
     synchronizing = true;
     dmp = new diff_match_patch();
     patchLevel = $("#patch-level").val();
