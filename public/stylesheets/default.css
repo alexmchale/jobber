@@ -27,12 +27,12 @@ body {
 #public-chat {
   float: left;
   width: 48%;
-  background-color: green;
+  background-color: #dddddd;
 }
 
 /* line 23, ../../app/stylesheets/default.sass */
 #private-chat {
   float: right;
   width: 48%;
-  background-color: red;
+  background-color: #dddddd;
 }

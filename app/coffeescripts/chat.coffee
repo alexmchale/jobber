@@ -26,16 +26,13 @@ jQuery(document).ready ->
       appendMessage data.chat_message
     jQuery.post postUrl, payload, response, "json"
 
-  sendPublicChat  = (txt) -> sendChat "public", txt
-  sendPrivateChat = (txt) -> sendChat "private", txt
-
   pollChat = ->
     jQuery.getJSON pollUrl(), (data) ->
       appendMessage(c.chat_message) for c in data
       setTimeout pollChat, pollDelay
 
-  #$("#public-out").click -> $("#public-in").focus()
-  #$("#private-out").click -> $("#private-in").focus()
-  #$("#public-in").bufferInput sendPublicChat
-  #$("#private-in").bufferInput sendPrivateChat
-  #pollChat()
+  $("#public-out").click -> $("#public-in").focus()
+  $("#private-out").click -> $("#private-in").focus()
+  $("#public-in").bufferInput (txt) -> sendChat "public", txt
+  $("#private-in").bufferInput (txt) -> sendChat "private", txt
+  pollChat()

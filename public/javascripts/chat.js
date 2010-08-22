@@ -1,6 +1,6 @@
 (function() {
   jQuery(document).ready(function() {
-    var appendMessage, interviewId, lastChatId, pollChat, pollDelay, pollUrl, postUrl, privateOut, publicOut, sendChat, sendPrivateChat, sendPublicChat;
+    var appendMessage, interviewId, lastChatId, pollChat, pollDelay, pollUrl, postUrl, privateOut, publicOut, sendChat;
     pollDelay = 1000;
     interviewId = $("#interview-id").val();
     postUrl = ("/chat/" + (interviewId));
@@ -31,13 +31,7 @@
       };
       return jQuery.post(postUrl, payload, response, "json");
     };
-    sendPublicChat = function(txt) {
-      return sendChat("public", txt);
-    };
-    sendPrivateChat = function(txt) {
-      return sendChat("private", txt);
-    };
-    return (pollChat = function() {
+    pollChat = function() {
       return jQuery.getJSON(pollUrl(), function(data) {
         var _a, _b, _c, c;
         _b = data;
@@ -47,6 +41,19 @@
         }
         return setTimeout(pollChat, pollDelay);
       });
+    };
+    $("#public-out").click(function() {
+      return $("#public-in").focus();
     });
+    $("#private-out").click(function() {
+      return $("#private-in").focus();
+    });
+    $("#public-in").bufferInput(function(txt) {
+      return sendChat("public", txt);
+    });
+    $("#private-in").bufferInput(function(txt) {
+      return sendChat("private", txt);
+    });
+    return pollChat();
   });
 })();
