@@ -1,6 +1,6 @@
 (function() {
   $(document).ready(function() {
-    var createDocument, dmp, documentId, documentList, interviewDocument, interviewId, loadDocument, merge, patchLevel, serverData, syncDelay, syncTimer, synchronizing, templateList, updateDocument, updateDocumentList;
+    var createDocument, dmp, documentId, documentList, interviewDocument, interviewId, loadDocument, merge, patchLevel, serverData, setSyncTimer, syncDelay, syncTimer, synchronizing, templateList, updateDocument, updateDocumentList;
     templateList = $("#template");
     documentList = $("#document");
     interviewDocument = $("#interview-document");
@@ -106,31 +106,39 @@
           updateDocument(r1[0]);
         }
         serverData = patch.content;
-        patchLevel = patch.id;
+        return (patchLevel = patch.id);
       } else {
         serverData = "";
-        patchLevel = 0;
+        return (patchLevel = 0);
       }
-      return setTimeout(syncTimer, syncDelay);
     };
     syncTimer = function() {
-      var context, localData, patchUrl, queryUrl;
+      var context, localData;
       if (!(synchronizing)) {
         return null;
       }
-      patchUrl = ("/documents/patch/" + (documentId));
-      queryUrl = ("/documents/patch/current?interview_id=" + (interviewId));
       localData = interviewDocument.val();
-      if (serverData !== localData) {
-        context = {
+      context = {
+        success: merge,
+        complete: setSyncTimer,
+        dataType: "json"
+      };
+      if (serverData === localData) {
+        context.type = "GET";
+        context.url = ("/documents/patch/current?interview_id=" + (interviewId));
+      } else {
+        serverData = localData;
+        context.type = "POST";
+        context.url = ("/documents/patch/" + (documentId));
+        context.data = {
           patch_id: patchLevel,
           content: localData
         };
-        serverData = localData;
-        return jQuery.post(patchUrl, context, merge, "json");
-      } else {
-        return jQuery.getJSON(queryUrl, merge);
       }
+      return jQuery.ajax(context);
+    };
+    setSyncTimer = function() {
+      return setTimeout(syncTimer, syncDelay);
     };
     documentList.change(loadDocument);
     $("#new-document").click(createDocument);

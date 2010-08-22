@@ -103,26 +103,31 @@ $(document).ready ->
       serverData = ""
       patchLevel = 0
 
-    setTimeout syncTimer, syncDelay
-
   syncTimer = ->
 
     return unless synchronizing
 
-    patchUrl  = "/documents/patch/#{documentId}"
-    queryUrl  = "/documents/patch/current?interview_id=#{interviewId}"
     localData = interviewDocument.val()
 
-    if serverData != localData
-      context =
+    context =
+      success:    merge
+      complete:   setSyncTimer
+      dataType:   "json"
+
+    if serverData == localData
+      context.type = "GET"
+      context.url  = "/documents/patch/current?interview_id=#{interviewId}"
+    else
+      serverData   = localData
+      context.type = "POST"
+      context.url  = "/documents/patch/#{documentId}"
+      context.data =
         patch_id: patchLevel
         content:  localData
 
-      serverData = localData
+    jQuery.ajax context
 
-      jQuery.post patchUrl, context, merge, "json"
-    else
-      jQuery.getJSON queryUrl, merge
+  setSyncTimer = -> setTimeout syncTimer, syncDelay
 
   documentList.change loadDocument
   $("#new-document").click createDocument
