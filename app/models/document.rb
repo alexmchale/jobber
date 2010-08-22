@@ -12,7 +12,8 @@ class Document < ActiveRecord::Base
 
   def apply_from_template(template)
     self.name = template.name
-    self.content = template.content
+    self.content = ""
+    self.patch! nil, template.content
 
     while Document.find_by_name_and_interview_id(name, interview_id)
       index = index ? index+1 : 2
@@ -28,6 +29,7 @@ class Document < ActiveRecord::Base
 
   def patch!(source_patch, content)
     Document.transaction do
+      self.save!
       self.lock!
 
       next_patch = self.patches.create!
@@ -49,8 +51,6 @@ class Document < ActiveRecord::Base
 
       next_patch
     end
-  rescue
-    next_patch.destroy if next_patch
   end
 
   def last_patch
