@@ -107,6 +107,8 @@ class DocumentsController < ApplicationController
   #   :content      the new version of the document
   #   :patch_id     the version of the document to patch
   def patch
+    raise "maximum document size is 32Kb" if params[:content].to_s.length > 32 * 1024
+
     @interview = Interview.find_by_id(params[:interview_id])
     @document = @interview.current_document if params[:id] == "current"
     @document ||= Document.find(params[:id])
