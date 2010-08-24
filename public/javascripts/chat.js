@@ -11,7 +11,7 @@
       var channel, txt;
       if (lastChatId < cm.id) {
         channel = cm.channel === "private" ? privateOut : publicOut;
-        txt = ("<p class='chat_message'>" + (cm.message) + "</p>");
+        txt = ("<p class='chat_message'>" + (cm.time) + " " + (cm.name) + " " + (cm.message) + "</p>");
         channel.append(txt);
         channel.get(0).scrollTop = channel.get(0).scrollHeight;
         return (lastChatId = cm.id);
@@ -37,7 +37,7 @@
         _b = data;
         for (_a = 0, _c = _b.length; _a < _c; _a++) {
           c = _b[_a];
-          appendMessage(c.chat_message);
+          appendMessage(c);
         }
         return setTimeout(pollChat, pollDelay);
       });

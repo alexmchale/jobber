@@ -23,16 +23,28 @@ body {
   clear: both;
 }
 
-/* line 18, ../../app/stylesheets/default.sass */
-#public-chat {
-  float: left;
-  width: 48%;
-  background-color: #dddddd;
+/* line 19, ../../app/stylesheets/default.sass */
+#chat input {
+  width: 100%;
 }
 
-/* line 23, ../../app/stylesheets/default.sass */
+/* line 22, ../../app/stylesheets/default.sass */
+#public-chat {
+  float: left;
+  width: 42.5%;
+  padding: 1em;
+  background-color: #bbbbbb;
+}
+
+/* line 28, ../../app/stylesheets/default.sass */
 #private-chat {
   float: right;
-  width: 48%;
+  width: 42.5%;
+  padding: 1em;
+  background-color: #bbbbbb;
+}
+
+/* line 34, ../../app/stylesheets/default.sass */
+.chat-out {
   background-color: #dddddd;
 }

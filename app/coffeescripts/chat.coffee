@@ -10,7 +10,7 @@ jQuery(document).ready ->
   appendMessage = (cm) ->
     if lastChatId < cm.id
       channel = if cm.channel is "private" then privateOut else publicOut
-      txt = "<p class='chat_message'>#{cm.message}</p>"
+      txt = "<p class='chat_message'>#{cm.time} #{cm.name} #{cm.message}</p>"
       channel.append txt
       channel.get(0).scrollTop = channel.get(0).scrollHeight
       lastChatId = cm.id
@@ -28,7 +28,7 @@ jQuery(document).ready ->
 
   pollChat = ->
     jQuery.getJSON pollUrl(), (data) ->
-      appendMessage(c.chat_message) for c in data
+      appendMessage(c) for c in data
       setTimeout pollChat, pollDelay
 
   $("#public-out").click -> $("#public-in").focus()
