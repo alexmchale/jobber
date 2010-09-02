@@ -20,15 +20,14 @@
     = js_anchor t("documents.new.title"), "new-document"
     = select_tag :document, options_from_collection_for_select(@documents, "id", "name", @interview.current_document.andand.id)
 
-%p
+#doc
   - if @interview.current_document
     ~ text_area_tag "interview-document", @interview.current_document.content
     -# %textarea#interview-document{:contentEditable => true}= @interview.current_document.content
     = hidden_field_tag "patch-level", @interview.current_document.patches.last.andand.id.to_i
   - else
     %textarea#interview-document
-      The interview has not yet begun. Add a document to begin. Once the
-      interview starts, it will remain active for eight hours.
+      The interview has not yet begun. Add a document to begin. Once the interview starts, it will remain active for eight hours.
     = hidden_field_tag "patch-level", 0
 
 #chat

@@ -1,5 +1,131 @@
+// MIXINS
+
+=clearfix
+  *display:                 inline-block
+  &:after
+    content:                " "
+    display:                block
+    height:                 0
+    clear:                  both
+    visibility:             hidden
+
+// CONSTANTS
+
+$item-color:          #024A68
+$standard-background: #FFBD73
+$detail-background:   #FFA540
+$anchor-high:         #FFBD73
+$anchor-low:          #024A68
+$blur-background:     #418DB0
+$focus-background:    #63AFD0
+
+// DEFAULTS
+
 body
-  padding: 2.0em
+  padding: 0 0 0 0
+  margin: 0 0 0 0
+  background-color: $standard-background
+  font-size: 1.25em
+
+a
+  color: #024A68
+  text-decoration: underline
+  &:hover
+    color: #FFFFFF
+    background-color: $item-color
+
+a.action
+  color: $anchor-high
+  background-color: $anchor-low
+  border-radius: 10px
+  padding: 5px
+  display: block
+  width: 15em
+  float: right
+  text-align: center
+  text-decoration: none
+  &:hover
+    color: $anchor-low
+    background-color: $anchor-high
+    border: 2px solid $anchor-low
+
+ul
+  list-style-type: none
+
+form
+  font-family: helvetica, sans-serif
+  font-size: 0.8em
+  input
+    font-size: 2.0em
+  input[type=text]
+    width: 25em
+    padding: 0.25em
+  .inactive
+    background-color: $blur-background
+    border: 5px dotted $blur-background
+  .active
+    background-color: $focus-background
+    border: 5px dotted black
+  .field
+    padding: 0.5em
+
+// ELEMENTS
+
+div.separator
+  margin-left: 0px
+  margin-right: 0px
+  height: 1.0em
+
+div.center
+  margin-left: 0px
+  margin-right: 0px
+  text-align: center
+
+div.left
+  text-align: left
+
+// LAYOUT
+
+#jobber-header
+  margin: 0px 0px 0px 0px
+  background-color: $detail-background
+  padding: 10px 10px 10px 10px
+  border-bottom: 5.0px solid $item-color
+  +clearfix
+
+#jobber-name
+  float: left
+  font-family: georgia, serif
+  font-weight: bold
+  font-size: 2.0em
+  text-shadow: 0px 2px 3px #555
+
+ul#account-nav
+  float: right
+  li
+    list-style: none
+    float: left
+    display: block
+    position: relative
+    padding: 0.2em
+
+#jobber-body
+  margin: auto
+  margin-top: 2.0em
+  padding: 1.0em
+  width: 950px
+  border: 5px solid $item-color
+  border-radius: 15px
+  background-color: $detail-background
+
+  h1
+    font-size: 3.0em
+  h2
+    font-size: 2.0em
+  h3
+    font-size: 1.5em
+
+// INTERVIEW
 
 #interview-document
   font-family: monospace
@@ -11,9 +137,6 @@ body
 .chat-out
   height: 250px
   overflow: auto
-
-.clearfix
-  clear: both
 
 #chat
   input

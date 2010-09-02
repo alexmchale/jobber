@@ -4,6 +4,7 @@
 
     %title Jobber
 
+    = stylesheet_link_tag "reset"
     = stylesheet_link_tag "default"
     = stylesheet_link_tag "formtastic"
     = stylesheet_link_tag "formtastic_changes"
@@ -18,11 +19,14 @@
 
   %body
 
-    %p
+    #jobber-header
 
-      %h1 Jobber
+      #jobber-name Jobber
 
       - if current_user
-        %p= link_to "Sign Out", "/sign_out"
+        %ul#account-nav
+          %li= current_user.email
+          %li= link_to "Dashboard", dashboard_path
+          %li= link_to "Sign Out", "/sign_out"
 
-    %p= yield
+    #jobber-body= yield

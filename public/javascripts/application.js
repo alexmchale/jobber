@@ -35,6 +35,20 @@
     input.keydown(processInput);
     return $(this);
   };
+  jQuery.fn.highlight = function() {
+    var e;
+    e = $(this);
+    e.focus(function() {
+      e.removeClass("inactive");
+      return e.addClass("active");
+    });
+    e.blur(function() {
+      e.removeClass("active");
+      return e.addClass("inactive");
+    });
+    e.addClass("inactive");
+    return e;
+  };
   window.curry = function(func) {
     var params1;
     params1 = __slice.call(arguments, 1);

@@ -10,4 +10,8 @@ module ApplicationHelper
     link_to(t("goto.dashboard"), dashboard_path) if current_user
   end
 
+  def separator(n = 1)
+    raw '<div class="separator">&nbsp;</div>' * n.to_i
+  end
+
 end

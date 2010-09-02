@@ -41,5 +41,20 @@ jQuery.fn.bufferInput = (callback) ->
 
   $(this)
 
+jQuery.fn.highlight = ->
+  e = $(this)
+
+  e.focus ->
+    e.removeClass "inactive"
+    e.addClass "active"
+
+  e.blur ->
+    e.removeClass "active"
+    e.addClass "inactive"
+
+  e.addClass "inactive"
+
+  e
+
 window.curry = (func, params1...) ->
   (params2...) -> func(params1..., params2...)

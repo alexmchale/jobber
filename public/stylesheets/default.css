@@ -1,9 +1,157 @@
-/* line 1, ../../app/stylesheets/default.sass */
+/* line 24, ../../app/stylesheets/default.sass */
 body {
-  padding: 2em;
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+  background-color: #ffbd73;
+  font-size: 1.25em;
 }
 
-/* line 4, ../../app/stylesheets/default.sass */
+/* line 30, ../../app/stylesheets/default.sass */
+a {
+  color: #024a68;
+  text-decoration: underline;
+}
+/* line 33, ../../app/stylesheets/default.sass */
+a:hover {
+  color: white;
+  background-color: #024a68;
+}
+
+/* line 37, ../../app/stylesheets/default.sass */
+a.action {
+  color: #ffbd73;
+  background-color: #024a68;
+  border-radius: 10px;
+  padding: 5px;
+  display: block;
+  width: 15em;
+  float: right;
+  text-align: center;
+  text-decoration: none;
+}
+/* line 47, ../../app/stylesheets/default.sass */
+a.action:hover {
+  color: #024a68;
+  background-color: #ffbd73;
+  border: 2px solid #024a68;
+}
+
+/* line 52, ../../app/stylesheets/default.sass */
+ul {
+  list-style-type: none;
+}
+
+/* line 55, ../../app/stylesheets/default.sass */
+form {
+  font-family: helvetica, sans-serif;
+  font-size: 0.8em;
+}
+/* line 58, ../../app/stylesheets/default.sass */
+form input {
+  font-size: 2em;
+}
+/* line 60, ../../app/stylesheets/default.sass */
+form input[type=text] {
+  width: 25em;
+  padding: 0.25em;
+}
+/* line 63, ../../app/stylesheets/default.sass */
+form .inactive {
+  background-color: #418db0;
+  border: 5px dotted #418db0;
+}
+/* line 66, ../../app/stylesheets/default.sass */
+form .active {
+  background-color: #63afd0;
+  border: 5px dotted black;
+}
+/* line 69, ../../app/stylesheets/default.sass */
+form .field {
+  padding: 0.5em;
+}
+
+/* line 74, ../../app/stylesheets/default.sass */
+div.separator {
+  margin-left: 0px;
+  margin-right: 0px;
+  height: 1em;
+}
+
+/* line 79, ../../app/stylesheets/default.sass */
+div.center {
+  margin-left: 0px;
+  margin-right: 0px;
+  text-align: center;
+}
+
+/* line 84, ../../app/stylesheets/default.sass */
+div.left {
+  text-align: left;
+}
+
+/* line 89, ../../app/stylesheets/default.sass */
+#jobber-header {
+  margin: 0px 0px 0px 0px;
+  background-color: #ffa540;
+  padding: 10px 10px 10px 10px;
+  border-bottom: 5px solid #024a68;
+  *display: inline-block;
+}
+/* line 5, ../../app/stylesheets/default.sass */
+#jobber-header:after {
+  content: " ";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+/* line 96, ../../app/stylesheets/default.sass */
+#jobber-name {
+  float: left;
+  font-family: georgia, serif;
+  font-weight: bold;
+  font-size: 2em;
+  text-shadow: 0px 2px 3px #555555;
+}
+
+/* line 103, ../../app/stylesheets/default.sass */
+ul#account-nav {
+  float: right;
+}
+/* line 105, ../../app/stylesheets/default.sass */
+ul#account-nav li {
+  list-style: none;
+  float: left;
+  display: block;
+  position: relative;
+  padding: 0.2em;
+}
+
+/* line 112, ../../app/stylesheets/default.sass */
+#jobber-body {
+  margin: auto;
+  margin-top: 2em;
+  padding: 1em;
+  width: 950px;
+  border: 5px solid #024a68;
+  border-radius: 15px;
+  background-color: #ffa540;
+}
+/* line 121, ../../app/stylesheets/default.sass */
+#jobber-body h1 {
+  font-size: 3em;
+}
+/* line 123, ../../app/stylesheets/default.sass */
+#jobber-body h2 {
+  font-size: 2em;
+}
+/* line 125, ../../app/stylesheets/default.sass */
+#jobber-body h3 {
+  font-size: 1.5em;
+}
+
+/* line 130, ../../app/stylesheets/default.sass */
 #interview-document {
   font-family: monospace;
   background-color: #dddddd;
@@ -12,23 +160,18 @@ body {
   overflow: auto;
 }
 
-/* line 11, ../../app/stylesheets/default.sass */
+/* line 137, ../../app/stylesheets/default.sass */
 .chat-out {
   height: 250px;
   overflow: auto;
 }
 
-/* line 15, ../../app/stylesheets/default.sass */
-.clearfix {
-  clear: both;
-}
-
-/* line 19, ../../app/stylesheets/default.sass */
+/* line 142, ../../app/stylesheets/default.sass */
 #chat input {
   width: 100%;
 }
 
-/* line 22, ../../app/stylesheets/default.sass */
+/* line 145, ../../app/stylesheets/default.sass */
 #public-chat {
   float: left;
   width: 42.5%;
@@ -36,7 +179,7 @@ body {
   background-color: #bbbbbb;
 }
 
-/* line 28, ../../app/stylesheets/default.sass */
+/* line 151, ../../app/stylesheets/default.sass */
 #private-chat {
   float: right;
   width: 42.5%;
@@ -44,7 +187,7 @@ body {
   background-color: #bbbbbb;
 }
 
-/* line 34, ../../app/stylesheets/default.sass */
+/* line 157, ../../app/stylesheets/default.sass */
 .chat-out {
   background-color: #dddddd;
 }

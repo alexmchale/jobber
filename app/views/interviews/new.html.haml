@@ -1,6 +1,32 @@
-= semantic_form_for @interview do |form|
-  = form.inputs :name, :email, :for => :candidate, :name => "Candidate"
-  = form.input :starts_at
-  = form.buttons
+%h2 Create a new interview
 
-= link_to_dashboard
+= separator
+
+= form_for @interview do |i|
+
+  = i.fields_for :candidate do |c|
+
+    .field
+      = c.label :candidate_name
+      %br
+      = c.text_field :name
+
+    .field
+      = c.label :candidate_email
+      %br
+      = c.text_field :email
+
+  .field
+    = i.label :starts_at
+    %br
+    = i.text_field :starts_at
+
+  = separator
+
+  = i.submit
+  = link_to_dashboard
+
+:javascript
+  $("#interview_candidate_attributes_name").highlight().focus();
+  $("#interview_candidate_attributes_email").highlight();
+  $("#interview_starts_at").highlight();

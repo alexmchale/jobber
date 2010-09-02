@@ -1,4 +1,31 @@
 /* line 2, ../../app/stylesheets/formtastic_changes.sass */
 form.formtastic textarea {
   font-family: monospace;
+  width: 400px;
+}
+/* line 5, ../../app/stylesheets/formtastic_changes.sass */
+form.formtastic label {
+  font-family: helvetica, tahoma, sans-serif;
+  font-size: 0.8em;
+  width: 200px;
+}
+/* line 9, ../../app/stylesheets/formtastic_changes.sass */
+form.formtastic legend {
+  font-size: 1.5em;
+}
+/* line 11, ../../app/stylesheets/formtastic_changes.sass */
+form.formtastic ul {
+  list-style: none;
+}
+/* line 13, ../../app/stylesheets/formtastic_changes.sass */
+form.formtastic li {
+  list-style-type: none;
+  margin-left: 0px;
+  margin-right: 0px;
+  padding: 0.25em;
+}
+/* line 18, ../../app/stylesheets/formtastic_changes.sass */
+form.formtastic ol {
+  margin-left: 0px;
+  margin-right: 0px;
 }

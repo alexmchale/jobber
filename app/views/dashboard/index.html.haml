@@ -1,17 +1,15 @@
-%h1= current_user.email
-
+= link_to "Create New Interview", new_interview_path, :class => "action"
 %h2 Interviews
 
 %ul
   - current_user.interviews.each do |i|
     %li= link_to i.candidate.name, interview_path(i)
 
-%p= link_to "Create New Interview", new_interview_path
+= separator
 
+= link_to "Create New Template", new_template_path, :class => "action"
 %h2 Document Templates
 
 %ul
   - current_user.templates.each do |template|
     %li= link_to template.name, template_path(template)
-
-%p= link_to "Create New Template", new_template_path
