@@ -10,6 +10,10 @@ module ApplicationHelper
     link_to(t("goto.dashboard"), dashboard_path) if current_user
   end
 
+  def link_to_interview(i)
+    link_to i.candidate.name, interview_path(i)
+  end
+
   def separator(n = 1)
     raw '<div class="separator">&nbsp;</div>' * n.to_i
   end

@@ -1,9 +1,21 @@
 = link_to "Create New Interview", new_interview_path, :class => "action"
-%h2 Interviews
+
+%h2 Active Interviews
 
 %ul
-  - current_user.interviews.each do |i|
-    %li= link_to i.candidate.name, interview_path(i)
+  - current_user.interviews.active.each do |i|
+    %li= link_to_interview i
+
+= separator
+
+%h2 Pending Interviews
+
+%ul
+  - current_user.interviews.pending.each do |i|
+    %li= link_to_interview i
+
+= separator
+= link_to "View Finished Interviews", interviews_path(:status => :finished)
 
 = separator
 

@@ -16,6 +16,11 @@ class Interview < ActiveRecord::Base
 
   before_validation :generate_access_code
 
+  scope :user, lambda { |user| includes(:user_interviews).where("user_interviews.user_id = ?", user.id) }
+  scope :pending, where("started_at IS NULL")
+  scope :active, lambda { where("started_at >= ?", 8.hours.ago) }
+  scope :finished, lambda { where("started_at < ?", 8.hours.ago) }
+
   ### AUTHORIZATION ###
 
   def authorized?(token)

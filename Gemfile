@@ -16,6 +16,7 @@ group :development do
   gem 'wirble'
   gem 'awesome_print', :require => 'ap'
   gem 'compass'
+  gem 'hirb'
 end
 
 group :test do

@@ -4,6 +4,14 @@ class InterviewsController < ApplicationController
   before_filter :load_interview, :only => :show
 
   def index
+    @interviews = Interview.user(current_user)
+
+    case @status = params[:status]
+    when "finished" then @interviews = @interviews.finished
+    when "pending"  then @interviews = @interviews.pending
+    when "active"   then @interviews = @interviews.active
+    else                 @status     = "all"
+    end
   end
 
   def show
