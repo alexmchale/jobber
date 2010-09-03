@@ -1,8 +1,0 @@
-== Jobber
-
-Interview access_code will authorize starting 30 minutes before an interview
-starts and allow the user to be connected for 2.5 hours following the initial
-connection. After that, only users with access to the interview can connect to
-it.
-
-Users can add templates to the interview.
